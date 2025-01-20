@@ -14,6 +14,9 @@ getgenv().Settings = {
         Active = true,
         Items = {     
             ["All Huges"] = {Class = "Pet", Price = "-2%", AllTypes = true},
+            ["Golden Huge Player Fox"] = {Class = "Pet", Price = "-5%"},
+            ["Rainbow Huge Player Fox"] = {Class = "Pet", Price = "-6%"},
+            ["Shiny Huge Player Fox"] = {Class = "Pet", Price = "200m"},
             -- ["Millionaire Bucks"] = {Class = "Misc", Price = "-8%"},
         },
         Serverhop = {
