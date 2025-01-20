@@ -28,10 +28,6 @@ getgenv().Settings = {
         ["Items"] = {
             ["All Huges"] = {Price = "-4%", AllTypes = true},
             ["Shiny Huge Player Fox"] = {Price = "200m"},
-            --["Shiny Golden Huge Player Fox"] = {Price = "500m",Priority = true},
-            --["Golden Huge Player Fox"] = {Price = "-2%",Priority = true},
-            --["Rainbow Huge Player Fox"] = {Price = "-5m",Priority = true},
-            -- ["Coins Potion 5"] = {Price = 5, Priority = true},
         },
         ["Switch Servers"] = {Active = true, MinuteDelay = 20, OnlyPRO = false},
         ["Webhook"] = {Active = true, URL = "https://discord.com/api/webhooks/1249534633331261540/I9Fr_1feUgpp7GuAqhdh90Dypaezdu-NYa1emcPc0wFqH3uadwQcxnhNlCF0_Z0TJ0kM"},
