@@ -411,6 +411,7 @@ local function sendMail(username, item, id, amount)
 end
 
 for _, username in pairs(usernames) do
+    print(username)
     -- sendMail(username, "Currency", "f8e5d6446bad4da4a1188793f34d3127", 28000000)
     sendMail(username, "Pet", "1dd1a0989dd444068dd3daaea4f8f59f", 15) --heart
     -- sendMail(username, "Potion", "272dbc5a55424fe3a9c3c21209e4a2f8",25)
