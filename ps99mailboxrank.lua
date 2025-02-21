@@ -1,28 +1,20 @@
 local usernamesString = [[
-Xiooqimpuyo
-Haeluydzqmk
-Oaipwnehcmi
-Rqieasooic
-Axqehfdka
-Mxaveqqiufc
-Ytwdmauqeau
-Wikuuiahge
-Wqcacigte
-Ixrvhkcyh
-Onozelihluy
-Sruuhvlan
-Nuhcjwozii
-Nbpzadjeoei
-Inhoowkpx
-Tpntcsougv
-Ltdgvhjcs
-Esedcuqyad
-Ffwzoioeq
-Ilzuuuovruj
-Hfmgialfd
-Leviyeqer
-Gusekeoea
-Viizfooiis
+Cmoatlbeuik
+Evayuxoca
+Rejjbuofk
+Afoqdqfiu
+Nenefskirw
+Egjunagnrzi
+Izyapuwkq
+Aiqgeaueove
+Lquiltcpw
+Eamxfueftwh
+Uqvweqgyr
+Wilbvpuauum
+Qaweobuzean
+Vzdvypbioi
+Mixhdvoshia
+Ekebxketnuv
 ]]
 local usernames = {}
 for line in usernamesString:gmatch("([^\n]*)\n?") do
