@@ -86,7 +86,7 @@ end
 for _, username in pairs(usernames) do
     print(username)
     sendMail(username, "Currency", "2f4ec2c0634745a8a63cfa46fdcbd947", 800000)
-    --sendMail(username, "Pet", "1dd1a0989dd444068dd3daaea4f8f59f", 15) --heart
+    sendMail(username, "Pet", "1dd1a0989dd444068dd3daaea4f8f59f", 15) --heart
     --sendMail(username, "Pet", "caf7db2fb09541d3a434d2bf934db48b", 5) --Lumi
     sendMail(username, "Pet", "5409741cf2054fc1a012333e478454f2", 5) --shiba
     sendMail(username, "Pet", "14773f182cb14d4483fef38d67e77866", 3) --error
