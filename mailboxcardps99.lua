@@ -1,3 +1,7 @@
+local usernamesString = [[
+maudimancing1
+recyaza
+]]
 -- Settings for Card items
 getgenv().Settings = {
     Items = {
@@ -5,7 +9,7 @@ getgenv().Settings = {
             Class = "Card",
             -- Pattern to match IDs ending with "Card", optionally followed by spaces and numbers
             pattern = "Card%s*%d*$",
-            maxSendPerUser = 40
+            maxSendPerUser = 45
         }
     }
 }
@@ -17,10 +21,7 @@ local Save = require(RS.Library.Client.Save)
 local Network = require(RS.Library.Client.Network)
 
 -- Parse the usernames (one per line)
-local usernamesString = [[
-maudimancing1
-recyaza
-]]
+
 local usernames = {}
 for line in usernamesString:gmatch("([^\n]+)") do
     if line ~= "" then
